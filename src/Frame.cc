@@ -290,7 +290,7 @@ namespace ORB_SLAM3 {
         AssignFeaturesToGrid();
     }
 
-
+    // pPrevF首次为空值
     Frame::Frame(const cv::Mat &imGray, const double &timeStamp, ORBextractor *extractor, ORBVocabulary *voc,
                  GeometricCamera *pCamera, cv::Mat &distCoef, const float &bf, const float &thDepth, Frame *pPrevF,
                  const IMU::Calib &ImuCalib)
@@ -326,11 +326,11 @@ namespace ORB_SLAM3 {
 #endif
 
 
-        N = mvKeys.size();
+        N = mvKeys.size();  // mvKeys由ORB金字塔获得
         if (mvKeys.empty())
             return;
 
-        UndistortKeyPoints();
+        UndistortKeyPoints();  // 对关键点进行去畸变
 
         // Set no stereo information
         mvuRight = vector<float>(N, -1);
@@ -346,7 +346,7 @@ namespace ORB_SLAM3 {
 
         // This is done only for the first Frame (or after a change in the calibration)
         if (mbInitialComputations) {
-            ComputeImageBounds(imGray);
+            ComputeImageBounds(imGray);  // 计算去畸变后图像的边界
 
             mfGridElementWidthInv = static_cast<float>(FRAME_GRID_COLS) / static_cast<float>(mnMaxX - mnMinX);
             mfGridElementHeightInv = static_cast<float>(FRAME_GRID_ROWS) / static_cast<float>(mnMaxY - mnMinY);
@@ -740,12 +740,13 @@ namespace ORB_SLAM3 {
 
         // Undistort points
         mat = mat.reshape(2);
+        // 去畸变
         cv::undistortPoints(mat, mat, static_cast<Pinhole *>(mpCamera)->toK(), mDistCoef, cv::Mat(), mK);
         mat = mat.reshape(1);
 
 
         // Fill undistorted keypoint vector
-        mvKeysUn.resize(N);
+        mvKeysUn.resize(N);  // 将去除畸变后的点保存至此
         for (int i = 0; i < N; i++) {
             cv::KeyPoint kp = mvKeys[i];
             kp.pt.x = mat.at<float>(i, 0);

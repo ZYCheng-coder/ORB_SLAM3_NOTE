@@ -1593,7 +1593,14 @@ void Tracking::PrintTimeStats()
         // TODO To implement...
     }
 
-
+    /**
+     * @brief 跟踪过程，包括恒速模型跟踪、参考关键帧跟踪、局部地图跟踪
+     * track包含两部分：估计运动、跟踪局部地图
+     *
+     * Step 1：初始化
+     * Step 2：跟踪
+     * Step 3：记录位姿信息，用于轨迹复现
+     */
     void Tracking::Track() {
 
         if (bStepByStep) {
@@ -1619,9 +1626,9 @@ void Tracking::PrintTimeStats()
                 cerr << "ERROR: Frame with a timestamp older than previous frame detected!" << endl;
                 unique_lock<mutex> lock(mMutexImuQueue);
                 mlQueueImuData.clear();
-                CreateMapInAtlas();
+                CreateMapInAtlas();  // 创建新的局部地图
                 return;
-            } else if (mCurrentFrame.mTimeStamp > mLastFrame.mTimeStamp + 1.0) {
+            } else if (mCurrentFrame.mTimeStamp > mLastFrame.mTimeStamp + 1.0) {  // 时间太久
                 // cout << mCurrentFrame.mTimeStamp << ", " << mLastFrame.mTimeStamp << endl;
                 // cout << "id last: " << mLastFrame.mnId << "    id curr: " << mCurrentFrame.mnId << endl;
                 if (mpAtlas->isInertial()) {
