@@ -39,7 +39,19 @@ using namespace std;
 
 namespace ORB_SLAM3 {
 
-
+    /**
+     * @brief 跟踪线程构造函数
+     * @param pSys 系统类指针
+     * @param pVoc 词典
+     * @param pFrameDrawer 画图像的
+     * @param pMapDrawer 画地图的
+     * @param pAtlas atlas
+     * @param pKFDB 关键帧词典数据库
+     * @param strSettingPath 参数文件路径
+     * @param sensor 传感器类型
+     * @param settings 参数类
+     * @param _strSeqName 序列名字，没用到
+     */
     Tracking::Tracking(System *pSys, ORBVocabulary *pVoc, FrameDrawer *pFrameDrawer, MapDrawer *pMapDrawer,
                        Atlas *pAtlas, KeyFrameDatabase *pKFDB, const string &strSettingPath, const int sensor,
                        Settings *settings, const string &_nameSeq) :

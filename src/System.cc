@@ -426,6 +426,7 @@ namespace ORB_SLAM3 {
 
             LOG(ERROR) << "mbActivateLocalizationMode: " << mbActivateLocalizationMode;
             LOG(ERROR) << "mbDeactivateLocalizationMode: " << mbDeactivateLocalizationMode;
+            // 输出均为false
             if (mbActivateLocalizationMode) {
                 mpLocalMapper->RequestStop();
 
